@@ -116,6 +116,7 @@ router.post('/api/weyek/proxy', async ctx => {
       data: result.data
     };
   } catch (error) {
+    console.error(error);
     return error;
   }
 });
