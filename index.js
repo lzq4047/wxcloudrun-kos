@@ -50,6 +50,15 @@ router.get("/api/wx_openid", async (ctx) => {
   }
 });
 
+// 
+router.get("/api/weyek/echo", async ctx => {
+  const { text } = ctx.request.query || {};
+  ctx.body = {
+    code: 0,
+    data: text
+  };
+});
+
 const app = new Koa();
 app
   .use(logger())
