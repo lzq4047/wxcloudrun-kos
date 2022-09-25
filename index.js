@@ -19,32 +19,32 @@ router.get("/", async (ctx) => {
 });
 
 // 更新计数
-// router.post("/api/count", async (ctx) => {
-//   const { request } = ctx;
-//   const { action } = request.body;
-//   if (action === "inc") {
-//     await Counter.create();
-//   } else if (action === "clear") {
-//     await Counter.destroy({
-//       truncate: true,
-//     });
-//   }
+router.post("/api/count", async (ctx) => {
+  const { request } = ctx;
+  const { action } = request.body;
+  if (action === "inc") {
+    await Counter.create();
+  } else if (action === "clear") {
+    await Counter.destroy({
+      truncate: true,
+    });
+  }
 
-//   ctx.body = {
-//     code: 0,
-//     data: await Counter.count(),
-//   };
-// });
+  ctx.body = {
+    code: 0,
+    data: await Counter.count(),
+  };
+});
 
-// // 获取计数
-// router.get("/api/count", async (ctx) => {
-//   const result = await Counter.count();
+// 获取计数
+router.get("/api/count", async (ctx) => {
+  const result = await Counter.count();
 
-//   ctx.body = {
-//     code: 0,
-//     data: result,
-//   };
-// });
+  ctx.body = {
+    code: 0,
+    data: result,
+  };
+});
 
 router.post('/api/weyek/proxy/openapi/subscribeMessage', async ctx => {
   const {
@@ -88,7 +88,7 @@ app
 
 const port = process.env.PORT || 80;
 async function bootstrap() {
-  // await initDB();
+  await initDB();
   app.listen(port, () => {
     console.log("启动成功", port);
   });
