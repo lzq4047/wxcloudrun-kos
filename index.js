@@ -5,13 +5,14 @@ const bodyParser = require("koa-bodyparser");
 const fs = require("fs");
 const path = require("path");
 const cloud = require('wx-server-sdk');
-const request = require('request');
+const axios = require('axios');
 const { init: initDB, Counter } = require("./db");
 
 const router = new Router();
-cloud.init();
+cloud.init({});
 
 const homePage = fs.readFileSync(path.join(__dirname, "index.html"), "utf-8");
+const URL_PREFIX = 'http://api.weixin.qq.com';
 
 // 首页
 router.get("/", async (ctx) => {
@@ -46,17 +47,30 @@ router.get("/api/count", async (ctx) => {
   };
 });
 
-router.post('/api/weyek/proxy/openapi/subscribeMessage', async ctx => {
-  const {
-    method,
-    params = {}
-  } = ctx.request.body || {};
+router.get('/api/weyek/proxy/openapi/subscribeMessage/getTemplateList', async ctx => {
   console.log(ctx.request.body);
   try {
-    const result = await cloud.openapi.subscribeMessage[method](params);
+    const result = await cloud.openapi.subscribeMessage.getTemplateList({});
+    console.log('getTemplateList result', result);
     ctx.body = {
       code: 0,
       data: result,
+    };
+  } catch (error) {
+    return error;
+  }
+})
+
+router.get('/api/weyek/proxy/openapi/subscribeMessage/getTemplateList1', async ctx => {
+  console.log(ctx.request.body);
+  try {
+    const result = await axios.get('http://api.weixin.qq.com/wxa/gettemplatelist', {
+
+    });
+    console.log('getTemplateList result', result.data);
+    ctx.body = {
+      code: 0,
+      data: result.data,
     };
   } catch (error) {
     return error;
@@ -77,6 +91,33 @@ router.get("/api/weyek/echo", async ctx => {
     code: 0,
     data: text
   };
+});
+
+router.post('/api/weyek/proxy', async ctx => {
+  const requestHeaders = ctx.header;
+  const {
+    method = 'get',
+    path = '/',
+    query = {},
+    data: requestData = {},
+  } = ctx.body || {};
+  try {
+    const result = await axios({
+      method,
+      url: `${URL_PREFIX}${path}`,
+      query,
+      data: requestData
+    });
+  
+    ctx.body = {
+      code: 0,
+      requestHeaders,
+      query: ctx.query,
+      data: result.data
+    };
+  } catch (error) {
+    return error;
+  }
 });
 
 const app = new Koa();
