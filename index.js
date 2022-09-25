@@ -101,6 +101,7 @@ router.post('/api/weyek/proxy', async ctx => {
     query = {},
     data: requestData = {},
   } = ctx.body || {};
+  console.log(ctx.body);
   try {
     const result = await axios({
       method,
