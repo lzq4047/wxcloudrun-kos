@@ -1,5 +1,13 @@
 {
-  "containers": [],
+  "containers": [
+    {
+      "name": "wxcloudrun-kos",
+      "domain": "",
+      "ip": "",
+      "mode": "compose",
+      "containerId": "64fad97591b72fe80b6ba60604df695edb30b0ac94eba8d5f38ab9773cf86b5c"
+    }
+  ],
   "config": {
     "wxcloudrun-kos": {
       "containerPort": 80,
