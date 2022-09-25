@@ -94,7 +94,7 @@ router.get("/api/weyek/echo", async ctx => {
 });
 
 router.post('/api/weyek/proxy', async ctx => {
-  const requestHeaders = ctx.header;
+  const requestHeaders = ctx.request.header;
   const {
     method = 'get',
     path = '/',
